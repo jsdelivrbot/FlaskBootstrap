@@ -4,6 +4,7 @@
 	<title>User Login</title>
 </head>
 <body>
+	{{ render_form(form, "Register", "/register", "post") }}
 	<form action="/register" method="post">
 		<p><label>email: <input type="text" name="email" /></label></p>
 		<p><label>Password: <input type="password" name="password" /></label></p>

@@ -1,0 +1,10 @@
+{% from "form_create_macro.html" import render_form %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Login</title>
+</head>
+<body>
+    {{ render_form(form, "Login", "/login", "post") }}
+</body>
+</html>

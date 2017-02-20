@@ -1,0 +1,10 @@
+{% from "form_field_macro.html" import render_field %}
+{% macro render_form(form, btn_label, action, method) %}
+<form action="{{ action }}" method="{{ method }}"> 
+    {% for field in form %}
+        {{ render_field(field) }}
+    {% endfor %}
+    <input type="submit" value="{{ btn_label }}"/>
+</form>
+{% endmacro %}
+

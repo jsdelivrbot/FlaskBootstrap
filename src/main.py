@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_migrate import Migrate
 from users import users
+from blog import blog
 from common.db import db
+from common.login import login_manager
 import os
 
 
@@ -18,7 +20,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}'\
 db.init_app(app)
 migrate = Migrate(app, db)
 
+login_manager.init_app(app)
+
 app.register_blueprint(users)
+app.register_blueprint(blog)
 
 if os.path.exists(".session_key"):
     with open(".session_key", "rb") as f:

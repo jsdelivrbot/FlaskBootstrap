@@ -1,0 +1,10 @@
+{% from "form_create_macro.html" import render_form %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ btn_label }}</title>
+</head>
+<body>
+    {{ render_form(form, btn_label, path, method) }}
+</body>
+</html>

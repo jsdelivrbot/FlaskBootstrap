@@ -1,0 +1,15 @@
+web:
+  build: .
+  ports:
+   - "8080:8080"
+  volumes:
+  - ./src:/src/
+  links:
+    - mysql
+mysql:
+  image: "mysql:8.0"
+  volumes: 
+    - ./data:/var/lib/mysql 
+  env_file:
+    - mysql_dev.env
+
