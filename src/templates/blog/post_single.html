@@ -1,0 +1,7 @@
+{% include 'theme/header.html' %}
+<div class="post_page">
+	<h3>{{ post.title }}</h3>
+	<span class="post_author">{{ post.author.first }} {{ post.author.last }}</span>
+	<p>{{ post.body }}</p>
+</div>
+{% include 'theme/footer.html' %}

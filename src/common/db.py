@@ -49,3 +49,8 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % self.title
+
+    def update(self, title, body, pub_date):
+        self.title = title
+        self.body = body
+        self.pub_date = pub_date

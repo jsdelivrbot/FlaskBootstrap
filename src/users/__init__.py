@@ -79,17 +79,9 @@ def register():
         db.session.add(user)
         try:
             db.session.commit()
+            return redirect("/")
         except exc.IntegrityError:
-            abort(400, )
             form.email.errors.append("Email already exists")
-            return render_template(
-                'form.html',
-                form=form,
-                btn_label="Register",
-                path=request.url_rule,
-                method="post")
-
-        return redirect("/")
     return render_template(
         'form.html',
         form=form,

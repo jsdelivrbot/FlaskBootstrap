@@ -1,13 +1,13 @@
 {% macro render_field(field) %}
 <div class="form-field">
 
-    {% if field.type not in ["HiddenField", "CSRFTokenField"] %}
+    {% if field.type not in ["HiddenField", "CSRFTokenField", "SubmitField"] %}
         <div class="form-field-label">
         {{ field.label() }}
         </div>
     {% endif %}
     <div class="form-field-value {{ "form-field-error" if field.errors|length>0 }}">
-        {{ field(**kwargs)|safe }}
+        {{ field(class_="form-" + field.type, **kwargs)|safe }}
         {% if field.errors %}
             <ul class=errors>
                 {% for error in field.errors %}

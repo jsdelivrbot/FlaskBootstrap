@@ -1,6 +1,6 @@
 from flask_login import LoginManager
 # expose these for import(allows us to make our own if we change login methods)
-from flask_login import login_user, logout_user, login_required # NOQA
+from flask_login import login_user, logout_user, login_required, current_user # NOQA
 import sqlalchemy
 from common.db import User
 
@@ -46,6 +46,13 @@ class UserLogin(object):
         ul.first = user.first
         ul.last = user.last
         return ul
+
+    def get_db(self):
+        try:
+            user = User.query.filter_by(id=self.uid).one()
+        except sqlalchemy.orm.exc.NoResultFound:
+            return None
+        return user
 
     def is_authenticated(self):
         return self.uid is not None

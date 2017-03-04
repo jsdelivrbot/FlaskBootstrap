@@ -1,10 +1,5 @@
 {% from "form_create_macro.html" import render_form %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ btn_label }}</title>
-</head>
-<body>
-    {{ render_form(form, btn_label, path, method) }}
-</body>
-</html>
+{% include 'theme/header.html' %}
+{% if caption is defined %}<div class="form-caption">{{ caption }}</div>{% endif %}
+{{ render_form(form, btn_label, path, method) }}
+{% include 'theme/footer.html' %}

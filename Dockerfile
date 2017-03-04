@@ -12,4 +12,4 @@ ENV LANG=C.UTF-8
 
 WORKDIR /src/
 # CMD ["bash", "init-db.sh"]
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=8080", "--with-threads"]
