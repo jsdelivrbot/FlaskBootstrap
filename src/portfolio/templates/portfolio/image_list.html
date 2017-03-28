@@ -1,0 +1,26 @@
+{% from "admin/operations.html" import admin_operations %}
+<table>
+	<tr>
+		<th>Caption</th>
+		<th>Image</th>
+		<th>Operations</th>
+	</tr>
+	{% for image in images %}
+	<tr>
+		<td>{{ image.image.caption }}</td>
+		<td><img width="50px" src="{{ url_for('images.view', image_id=image.image.id) }}"</td>
+		<td>
+			{{ 
+				admin_operations(
+					url_for('images.view', image_id=image.image.id),
+					"#",
+					url_for('portfolio.project_image_delete', project_image_id=image.id)
+				)
+			}}
+
+		</td>
+	</tr>	
+	{% endfor %}
+</table>
+{% include 'form.html' %}
+

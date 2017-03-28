@@ -1,6 +1,6 @@
 {% from "form_field_macro.html" import render_field %}
-{% macro render_form(form, btn_label, action, method) %}
-<form action="{{ action }}" method="{{ method }}"> 
+{% macro render_form(form, btn_label, action, method, with_file=false) %}
+<form action="{{ action }}" method="{{ method }}" {% if with_file %}enctype="multipart/form-data"{% endif %}> 
     {% for field in form %}
         {{ render_field(field) }}
     {% endfor %}

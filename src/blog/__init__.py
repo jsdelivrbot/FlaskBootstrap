@@ -1,15 +1,17 @@
 from flask import Blueprint, render_template
-from flask import request, redirect, url_for
+from flask import redirect, url_for
 from flask import abort
 from sqlalchemy import exc
 import sqlalchemy
-import markdown
+import markdown2
 
 from common.login import login_required, current_user
 from common.db import Post, db
 from common.forms import ConfirmForm
+from common.helpers import render_form_page
 from blog.forms import PostForm
 from datetime import datetime
+import admin
 
 
 blog = Blueprint('blog', __name__,
@@ -23,25 +25,48 @@ def load_post(id_):
         return None
 
 
+def admin_table():
+    posts = Post.query.all()
+    return render_template("blog/post_table.html",
+                           posts=posts)
+
+
+admin.managed.append(admin_table)
+
+
 @blog.route('/')
 def blog_home_page():
-    pass
+    posts = Post.query\
+        .filter(Post.pub_date <= datetime.utcnow())\
+        .order_by(Post.id.desc())\
+        .limit(20)\
+        .all()
+    p = []
+    for post in posts:
+        post.body = markdown2.markdown(
+            post.body, extras=['fenced-code-blocks'])
+        p.append(post)
+    return render_template("blog/feed.html",
+                           posts=p)
 
 
-@blog.route('/post/manage')
+@blog.route('/manage')
+@login_required
 def post_table():
     posts = Post.query.all()
-    return render_template("blog/post_table.html", posts=posts)
+    return render_form_page("blog/post_table.html",
+                            posts=posts)
 
 
 @blog.route('/post/new', methods=["GET", "POST"])
 @login_required
-def new_post():
+def post_new():
     # GET = new post form, POST create post
     form = PostForm()
     if form.validate_on_submit():
         post = Post(
             form.title.data,
+            form.excerpt.data,
             form.body.data,
             current_user.get_db(),
             datetime.combine(form.publish_date.data, datetime.min.time()))
@@ -55,7 +80,7 @@ def new_post():
         'form.html',
         form=form,
         btn_label="Create Post",
-        path=request.url_rule,
+        path=url_for('blog.post_new'),
         method="post")
 
 
@@ -65,7 +90,7 @@ def post_view(post_id):
     post = load_post(post_id)
     if post is None:
         abort(404, "Post not found")
-    post.blog = 
+    post.body = markdown2.markdown(post.body, extras=['fenced-code-blocks'])
     return render_template("blog/post_single.html", post=post)
 
 
@@ -80,6 +105,7 @@ def post_edit(post_id):
     if form.validate_on_submit():
         post.update(
             form.title.data,
+            form.excerpt.data,
             form.body.data,
             datetime.combine(form.publish_date.data, datetime.min.time()))
         db.session.add(post)
@@ -89,6 +115,7 @@ def post_edit(post_id):
         except exc.IntegrityError:
             form.title.errors.append("Title already exists")
     form.title.data = post.title
+    form.excerpt.data = post.excerpt
     form.body.data = post.body
     form.publish_date.data = post.pub_date
     return render_template(
@@ -113,7 +140,7 @@ def post_delete(post_id):
             if form.yes.data is True:
                 db.session.delete(post)
                 db.session.commit()
-            return redirect(url_for("blog.home_page"))
+            return redirect(url_for("blog.blog_home_page"))
         except exc.IntegrityError:
             pass
     return render_template(

@@ -1,0 +1,7 @@
+{% macro admin_operations(get_url, edit_url, delete_url) %}
+<ul class="admin_operations">
+	<li class="admin_get"><a href="{{ get_url }}">View</a></li>
+	<li class="admin_edit"><a href="{{ edit_url }}">Edit</a></li>
+	<li class="admin_delete"><a href="{{ delete_url }}">Delete</a></li>
+</ul>
+{% endmacro %}

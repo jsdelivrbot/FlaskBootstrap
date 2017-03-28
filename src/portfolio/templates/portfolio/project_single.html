@@ -1,0 +1,8 @@
+{% include 'theme/header.html' %}
+<div class="project_page">
+	<h3>{{ project.title }}</h3>
+	<img src="{{ url_for('images.view', image_id=project.thumbnail_id) }}" title="{{ project.thumbnail.caption }}" alt="{{ project.thumbnail.caption }}">
+	<span class="project_author">{{ project.author.first }} {{ project.author.last }}</span>
+    {{ project.description|safe }}
+</div>
+{% include 'theme/footer.html' %}

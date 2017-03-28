@@ -1,7 +1,10 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_migrate import Migrate
 from users import users
 from blog import blog
+from images import images
+from portfolio import portfolio
+from admin import admin
 from common.db import db
 from common.login import login_manager
 import os
@@ -19,11 +22,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{}:{}@{}:{}/{}'\
 
 db.init_app(app)
 migrate = Migrate(app, db)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 
 login_manager.init_app(app)
-
 app.register_blueprint(users)
-app.register_blueprint(blog)
+app.register_blueprint(images, url_prefix="/images")
+app.register_blueprint(blog, url_prefix="/blog")
+app.register_blueprint(portfolio, url_prefix="/portfolio")
+app.register_blueprint(admin, url_prefix="/admin")
+
+
+@app.errorhandler(403)
+@app.errorhandler(401)
+def error403_login(e):
+    return redirect(url_for("users.login"))
+
 
 if os.path.exists(".session_key"):
     with open(".session_key", "rb") as f:

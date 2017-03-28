@@ -1,0 +1,27 @@
+{% from "macros/link.html" import link %}
+<div class="project_manage_list">
+    <table class="project_manage_table">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Created</th>
+            <th>Published</th>
+            <th>Actions</th>
+        </tr>
+        {% for project in projects %}
+        <tr>
+            <td class="project_title">{{ project.title }}</td>
+            <td class="project_author">{{ project.author.first }} {{ project.author.last }}</td>
+            <td class="project_created">{{ project.created }}</td>
+            <td class="project_publish_date">{{ project.pub_date }}</td>
+            <td class="project_ops">
+				{{ link("View", url_for('portfolio.project_view', project_id=project.id)) }}
+				{{ link("Edit", url_for('portfolio.project_edit', project_id=project.id)) }}
+				{{ link("Delete", url_for('portfolio.project_delete', project_id=project.id)) }}
+				{{ link("Add Image", url_for('portfolio.project_image_edit', project_id=project.id)) }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('portfolio.project_new') }}">Create New Project</a>
+</div>

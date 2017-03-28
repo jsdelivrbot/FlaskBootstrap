@@ -1,0 +1,30 @@
+{% from "admin/operations.html" import admin_operations %}
+<div class="post_manage_list">
+    <table class="post_manage_table">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Created</th>
+            <th>Published</th>
+            <th>Actions</th>
+        </tr>
+        {% for post in posts %}
+        <tr>
+            <td class="post_title">{{ post.title }}</td>
+            <td class="post_author">{{ post.author.first }} {{ post.author.last }}</td>
+            <td class="post_created">{{ post.created }}</td>
+            <td class="post_publish_date">{{ post.pub_date }}</td>
+            <td class="post_ops">
+                {{ 
+                    admin_operations(
+                        url_for('blog.post_view', post_id=post.id),
+                        url_for('blog.post_edit', post_id=post.id),
+                        url_for('blog.post_delete', post_id=post.id)
+                    )
+                }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('blog.post_new') }}">Create New Post</a>
+</div>

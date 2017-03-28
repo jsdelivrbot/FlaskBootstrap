@@ -1,0 +1,9 @@
+<div class="feed">
+    {% for project in projects %}
+    <div class="feed_project">
+        <h3>{{ project.title }}</h3>
+        <div class="project_author">{{ project.author.first }} {{ project.author.last }}</span>
+        {{ project.excerpt }}
+    </div>
+    {% endfor %}
+</div>

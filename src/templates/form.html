@@ -1,5 +1,7 @@
 {% from "form_create_macro.html" import render_form %}
-{% include 'theme/header.html' %}
 {% if caption is defined %}<div class="form-caption">{{ caption }}</div>{% endif %}
-{{ render_form(form, btn_label, path, method) }}
-{% include 'theme/footer.html' %}
+{% if with_file is defined %}
+	{{ render_form(form, btn_label, path, method, with_file=with_file) }}
+{% else %}
+	{{ render_form(form, btn_label, path, method, with_file=false) }}
+{% endif %}

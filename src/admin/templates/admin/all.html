@@ -1,0 +1,6 @@
+<h3 class="admin_table_header">All Content</h3>
+{% for table in tables %}
+<div class="admin_tables">
+    {{ table|safe }}
+</div>
+{% endfor %}
